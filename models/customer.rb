@@ -20,5 +20,4 @@ class Customer
     @id = result[0]['id'].to_i
   end
 
-
 end
