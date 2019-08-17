@@ -3,6 +3,7 @@ require_relative('../db/SqlRunner')
 class Customer
 
   attr_accessor :name, :funds
+  attr_reader :id
 
   def initialize(options)
     @name = options['name']
