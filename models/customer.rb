@@ -53,6 +53,21 @@ class Customer
     return map_results_to_film(results)
   end
 
+  def spend(price)
+    return nil if price > @funds
+    @funds -= price
+  end
+
+  def buy_ticket(film)
+    return nil if spend(film.price) == nil
+    ticket = Ticket.new({
+      'customer_id' => @id,
+      'film_id' => film.id
+    })
+    ticket.save()
+    self.update()
+  end
+
 end
 
 def map_results_to_customer(results)
