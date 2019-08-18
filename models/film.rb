@@ -54,6 +54,10 @@ class Film
     return map_results_to_customer(results)
   end
 
+  def customer_count()
+    return self.customers_booked.count()
+  end
+
 end
 
 def map_results_to_film(results)
