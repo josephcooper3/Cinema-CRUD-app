@@ -66,6 +66,19 @@ class Customer
     })
     ticket.save()
     self.update()
+    # Check if it is safe to run update method here or should be run separately
+  end
+
+  def all_tickets()
+    sql = "SELECT * FROM Tickets
+    WHERE customer_id = $1"
+    values = [@id]
+    results = SqlRunner.run(sql, values)
+    return map_results_to_ticket(results)
+  end
+
+  def ticket_count
+    return self.all_tickets.count()
   end
 
 end
@@ -76,4 +89,8 @@ end
 
 def map_results_to_film(results)
   results.map { |result| Film.new(result) }
+end
+
+def map_results_to_ticket(results)
+  results.map { |result| Ticket.new(result) }
 end
