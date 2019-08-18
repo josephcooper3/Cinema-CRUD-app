@@ -8,7 +8,7 @@ class Customer
   def initialize(options)
     @name = options['name']
     @funds = options['funds'].to_i
-    @id = options['id'] if options['id']
+    @id = options['id'].to_i if options['id']
   end
 
   def save()
@@ -46,7 +46,8 @@ class Customer
 
   def films_booked()
     sql = "SELECT * FROM films
-    INNER JOIN tickets ON films.id = tickets.film_id
+    INNER JOIN screenings ON films.id = screenings.film_id
+    INNER JOIN tickets ON tickets.screening_id = screenings.id
     WHERE customer_id = $1"
     values = [@id]
     results = SqlRunner.run(sql, values)
@@ -58,11 +59,16 @@ class Customer
     @funds -= price
   end
 
-  def buy_ticket(film)
+  def buy_ticket(film, screening)
+    # This method was complicated by the addition of the screenings table.
+    # At the moment it relies on being passed the film that the screening is for,
+    # otherwise the customer spends the wrong price.
+    # How to access the film price through the screening?
+    # Or could declare the price in the screening instead of the film?
     return nil if spend(film.price) == nil
     ticket = Ticket.new({
       'customer_id' => @id,
-      'film_id' => film.id
+      'screening_id' => screening.id
     })
     ticket.save()
     self.update()

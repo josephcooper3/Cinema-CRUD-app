@@ -8,7 +8,7 @@ class Film
   def initialize(options)
     @title = options['title']
     @price = options['price'].to_i
-    @id = options['id'] if options['id']
+    @id = options['id'].to_i if options['id']
   end
 
   def save()
@@ -48,6 +48,7 @@ class Film
   def customers_booked()
     sql = "SELECT * FROM customers
     INNER JOIN tickets ON customers.id = tickets.customer_id
+    INNER JOIN screenings ON screenings.id = tickets.screening_id
     WHERE film_id = $1"
     values = [@id]
     results = SqlRunner.run(sql, values)
