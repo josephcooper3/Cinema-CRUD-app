@@ -46,6 +46,13 @@ class Screening
     SqlRunner.run(sql)
   end
 
+  def film
+    sql = "SELECT * FROM films WHERE films.id = $1"
+    values = [@film_id]
+    film = SqlRunner.run(sql, values)
+    return Film.new(film[0])
+  end
+
 end
 
 def map_results_to_screening(results)
